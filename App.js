@@ -1,11 +1,13 @@
-import {Button, StyleSheet, Text, View,Alert} from 'react-native';
+import {Button, StyleSheet} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+
 import HomeScreen from "./Screens/HomeScreen";
 import DetailsScreen from "./Screens/DetailsScreen";
 import AddTaskScreen from "./Screens/AddTaskScreen";
 
 const Stack = createNativeStackNavigator();
+
 
 export default function App() {
   return (

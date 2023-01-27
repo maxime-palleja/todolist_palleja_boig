@@ -1,14 +1,49 @@
 import {Button, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import * as React from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-function HomeScreen({navigation}) {
+// const key = 'formData';
+//
+// const [formData, setFormData] = useState({
+//     name: '',
+//     description: '',
+//     status: '',
+//     assignation: ''
+// });
+//
+// const saveFormData = async (formDataArray) => {
+//     try {
+//         await AsyncStorage.setItem(key, JSON.stringify(formDataArray));
+//     } catch (error) {
+//         console.log(error);
+//     }
+// };
+//
+// const getFormData = async () => {
+//     try {
+//         const formDataString = await AsyncStorage.getItem(key);
+//         return JSON.parse(formDataString);
+//     } catch (error) {
+//         console.log(error);
+//     }
+// };
+
+
+function HomeScreen({navigation, route}) {
     return (
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-            <TouchableOpacity onPress={() =>navigation.navigate('AddTask')}>
+            <TouchableOpacity onPress={() => navigation.navigate('AddTask')}>
                 <View style={styles.addWrapper}>
                     <Text style={styles.addText}>Ajouter une tache</Text>
                 </View>
             </TouchableOpacity>
+            <View>
+                {route.params?.name ? (
+                    <Text style={styles.addText}>Nom: {route.params.name}, Description: {route.params.description}, Statue:  {route.params.statue}, Assignation:  {route.params.assigne}</Text>
+                ) : (
+                    <Text style={styles.addText}>Pas d'enregistrement ou Erreur lors de l'enregistrement</Text>
+                )}
+            </View>
         </View>
 
 
