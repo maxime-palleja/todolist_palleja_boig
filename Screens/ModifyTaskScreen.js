@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {View, TextInput, Button, Text, StyleSheet} from 'react-native';
 
-function AddTaskScreen({navigation}) {
-    const [formData, setFormData] = useState({name: '', description: '', statue: '', assigne: ''});
+function ModifyTaskScreen({navigation}) {
+    const [formData, setFormData] = useState({id: '', name: '', description: '', statue: '', assigne: ''});
     const [error, setError] = useState('');
 
     const handleSubmit = () => {
@@ -11,6 +11,7 @@ function AddTaskScreen({navigation}) {
             return;
         } else {
             navigation.navigate("HomeScreen", {
+                id: formData.id,
                 name: formData.name,
                 description: formData.description,
                 statue: formData.statue,
@@ -86,4 +87,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default AddTaskScreen;
+export default ModifyTaskScreen;

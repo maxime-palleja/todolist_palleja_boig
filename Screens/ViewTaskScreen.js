@@ -1,54 +1,31 @@
 import React, {useState} from 'react';
 import {View, TextInput, Button, Text, StyleSheet} from 'react-native';
 
-function AddTaskScreen({navigation}) {
-    const [formData, setFormData] = useState({name: '', description: '', statue: '', assigne: ''});
-    const [error, setError] = useState('');
+function ViewTaskScreen({navigation}) {
 
-    const handleSubmit = () => {
-        if (!formData.assigne || !formData.name || !formData.description || !formData.statue) {
-            setError('Tous les champs doivent être remplis');
-            return;
-        } else {
-            navigation.navigate("HomeScreen", {
-                name: formData.name,
-                description: formData.description,
-                statue: formData.statue,
-                assigne: formData.assigne
-            });
-        }
-        setError('');
-    };
     return (
         <View style={styles.container}>
             <View style={styles.formContainer}>
                 <TextInput
                     placeholder="Nom"
-                    value={formData.name}
-                    onChangeText={(text) => setFormData({...formData, name: text})}
                     style={styles.input}
                 />
                 <TextInput
                     placeholder="Description"
-                    value={formData.description}
-                    onChangeText={(text) => setFormData({...formData, description: text})}
                     style={styles.input}
                 />
                 <TextInput
                     placeholder="Statue"
-                    value={formData.statue}
-                    onChangeText={(text) => setFormData({...formData, statue: text})}
                     style={styles.input}
                 />
                 <TextInput
                     placeholder="Assignation"
-                    value={formData.assigne}
-                    onChangeText={(text) => setFormData({...formData, assigne: text})}
                     style={styles.input}
                 />
 
                 <Text style={styles.error}>{error}</Text>
-                <Button title="Envoyer" onPress={handleSubmit} style={styles.button} />
+                <Button title="Modifier" onPress={handleSubmit} style={styles.button} />
+                <Button title="Supprimer" onPress={handleSubmit} style={styles.button} />
             </View>
         </View>
 
@@ -86,4 +63,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default AddTaskScreen;
+export default ViewTaskScreen;
