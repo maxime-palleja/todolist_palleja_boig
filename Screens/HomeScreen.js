@@ -9,7 +9,12 @@ function HomeScreen({navigation}) {
                 title="Go to Details ->"
                 onPress={() => navigation.navigate('Details')}
             />
+            <Button
+                title="Go to AddTask ->"
+                onPress={() => navigation.navigate('AddTask')}
+            />
         </View>
+
 
     );
 }
