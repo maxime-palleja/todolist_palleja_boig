@@ -1,119 +1,81 @@
 import React, {useState} from 'react';
-import {
-    KeyboardAvoidingView,
-    StyleSheet,
-    Text,
-    View,
-    TextInput,
-    TouchableOpacity,
-    Keyboard,
-    ScrollView
-} from 'react-native';
-import Task from "../Component/Task";
-
+import {View, TextInput, Button, Text, StyleSheet} from 'react-native';
 
 function AddTaskScreen({navigation}) {
-    const [task, setTask] = useState();
-    const [taskItems, setTaskItems] = useState([]);
+    const [formData, setFormData] = useState({name: '', description: '', statue: '', assigne: ''});
+    const [error, setError] = useState('');
 
-    const handleAddTask = () => {
-        Keyboard.dismiss();
-        setTaskItems([...taskItems, task])
-        setTask(null);
-    }
-
-    const completeTask = (index) => {
-        let itemsCopy = [...taskItems];
-        itemsCopy.splice(index, 1);
-        setTaskItems(itemsCopy)
-    }
-
+    const handleSubmit = () => {
+        if (!formData.assigne || !formData.name || !formData.description || !formData.statue) {
+            setError('Tous les champs doivent être remplis');
+            return;
+        }
+        setError('');
+    };
     return (
         <View style={styles.container}>
-            <ScrollView
-                contentContainerStyle={{
-                    flexGrow: 1
-                }}
-                keyboardShouldPersistTaps='handled'
-            >
-                <View style={styles.tasksWrapper}>
-                    <View style={styles.items}>
-                        {
-                            taskItems.map((item, index) => {
-                                return (
-                                    <TouchableOpacity key={index} onPress={() => completeTask(index)}>
-                                        <Task text={item}/>
-                                    </TouchableOpacity>
-                                )
-                            })
-                        }
-                    </View>
-                </View>
+            <View style={styles.formContainer}>
+                <TextInput
+                    placeholder="Nom"
+                    value={formData.name}
+                    onChangeText={(text) => setFormData({...formData, name: text})}
+                    style={styles.input}
+                />
+                <TextInput
+                    placeholder="Description"
+                    value={formData.description}
+                    onChangeText={(text) => setFormData({...formData, description: text})}
+                    style={styles.input}
+                />
+                <TextInput
+                    placeholder="Statue"
+                    value={formData.statue}
+                    onChangeText={(text) => setFormData({...formData, statue: text})}
+                    style={styles.input}
+                />
+                <TextInput
+                    placeholder="Assignation"
+                    value={formData.assigne}
+                    onChangeText={(text) => setFormData({...formData, assigne: text})}
+                    style={styles.input}
+                />
 
-            </ScrollView>
-
-            <KeyboardAvoidingView
-                behavior={Platform.OS === "ios" ? "padding" : "height"}
-                style={styles.writeTaskWrapper}
-            >
-                <TextInput style={styles.input} placeholder={'Entrer votre tâche'} value={task}
-                           onChangeText={text => setTask(text)}/>
-                <TouchableOpacity onPress={() => handleAddTask()}>
-                    <View style={styles.addWrapper}>
-                        <Text style={styles.addText}>Add</Text>
-                    </View>
-                </TouchableOpacity>
-            </KeyboardAvoidingView>
-
+                <Text style={styles.error}>{error}</Text>
+                <Button title="Envoyer" onPress={handleSubmit} style={styles.button} />
+            </View>
         </View>
     );
-}
-export default AddTaskScreen;
+};
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#E8EAED',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
-    tasksWrapper: {
-        paddingTop: 80,
-        paddingHorizontal: 20,
-    },
-    sectionTitle: {
-        fontSize: 24,
-        fontWeight: 'bold'
-    },
-    items: {
-        marginTop: 30,
-    },
-    writeTaskWrapper: {
-        position: 'absolute',
-        bottom: 60,
-        width: '100%',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        alignItems: 'center'
+    formContainer: {
+        width: '80%',
+        alignItems: 'center',
     },
     input: {
-        paddingVertical: 15,
-        paddingHorizontal: 15,
-        backgroundColor: '#FFF',
-        borderRadius: 60,
-        borderColor: '#C0C0C0',
+        width: '100%',
+        padding: 10,
+        marginVertical: 10,
         borderWidth: 1,
-        width: 250,
+        borderColor: 'gray',
+        borderRadius: 5,
     },
-    addWrapper: {
-        width: 60,
-        height: 60,
-        backgroundColor: '#FFF',
-        borderRadius: 60,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderColor: '#C0C0C0',
-        borderWidth: 1,
+    error: {
+        color: 'red',
+        marginVertical: 10,
     },
-    addText: {
-
-    },
+    button: {
+        backgroundColor: 'blue',
+        color: 'white',
+        padding: 10,
+        marginTop: 20,
+        borderRadius: 5,
+    }
 });
+
+export default AddTaskScreen;
