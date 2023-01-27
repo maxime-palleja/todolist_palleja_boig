@@ -10,7 +10,7 @@ function AddTaskScreen({navigation}) {
             setError('Tous les champs doivent être remplis');
             return;
         } else {
-            navigation.navigate("HomeScreen", {
+            navigation.navigate("Home", {
                 name: formData.name,
                 description: formData.description,
                 statue: formData.statue,
