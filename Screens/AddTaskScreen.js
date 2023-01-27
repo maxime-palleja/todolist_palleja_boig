@@ -9,6 +9,13 @@ function AddTaskScreen({navigation}) {
         if (!formData.assigne || !formData.name || !formData.description || !formData.statue) {
             setError('Tous les champs doivent être remplis');
             return;
+        } else {
+            navigation.navigate("HomeScreen", {
+                name: formData.name,
+                description: formData.description,
+                statue: formData.statue,
+                assigne: formData.assigne
+            });
         }
         setError('');
     };
@@ -44,6 +51,7 @@ function AddTaskScreen({navigation}) {
                 <Button title="Envoyer" onPress={handleSubmit} style={styles.button} />
             </View>
         </View>
+
     );
 };
 
