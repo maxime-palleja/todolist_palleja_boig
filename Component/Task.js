@@ -6,8 +6,7 @@ const Task = (props) => {
     return (
         <View style={styles.item}>
             <View style={styles.itemLeft}>
-                <View></View>
-                <Text style={styles.itemText}>{props.text}</Text>
+                <Text style={styles.itemText}>{props.name}:{'\n'}{props.description}{'\n'}Etat: {props.statue}{'\n'}Assigné: {props.assigne}</Text>
             </View>
             <View style={styles.circular}></View>
         </View>
@@ -29,16 +28,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexWrap: 'wrap'
     },
-
     itemText: {
-        maxWidth: '80%',
+        maxWidth: '100%',
+        borderRightWidth:'10px'
     },
     circular: {
         width: 12,
         height: 12,
         borderColor: '#B900FF',
         borderWidth: 6,
-        borderRadius: 60,
+        borderRadius: 5,
     },
 });
 

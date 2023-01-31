@@ -1,52 +1,70 @@
-import {Button, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {View, Text, StyleSheet, AsyncStorage, ScrollView, TouchableOpacity, Alert} from 'react-native';
 import * as React from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
-// const key = 'formData';
-//
-// const [formData, setFormData] = useState({
-//     name: '',
-//     description: '',
-//     status: '',
-//     assignation: ''
-// });
-//
-// const saveFormData = async (formDataArray) => {
-//     try {
-//         await AsyncStorage.setItem(key, JSON.stringify(formDataArray));
-//     } catch (error) {
-//         console.log(error);
-//     }
-// };
-//
-// const getFormData = async () => {
-//     try {
-//         const formDataString = await AsyncStorage.getItem(key);
-//         return JSON.parse(formDataString);
-//     } catch (error) {
-//         console.log(error);
-//     }
-// };
+import Task from "../Component/Task";
+import {useState, useEffect} from "react";
 
 
 function HomeScreen({navigation, route}) {
+    const [data, setData] = useState(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const keys = await AsyncStorage.getAllKeys();
+                const items = await AsyncStorage.multiGet(keys);
+                setData(items.map(([key, value]) => ({key, value: JSON.parse(value)})));
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchData();
+    }, []);
+
+
     return (
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <ScrollView>
+                <View style={styles.tasksWrapper}>
+                    <View style={styles.items}>
+                        {data === null ? (
+                            <Text>Loading...</Text>
+                        ) : (data.map((item, index) => {
+                            return (
+                                console.log(item.value.name),
+                                <TouchableOpacity key={item.key} onPress={() => Alert.alert("MODIFIER / SUPPRIMER", "Tâche : "+item.value.name, [
+                                        {text: "Annuler", style: "cancel"},
+                                        {text: "Modifier", onPress: () => navigation.navigate("ModifyTask",{key:item.key ,name:item.value.name, description:item.value.description, statue:item.value.statue, assigne:item.value.assigne})},
+                                        {text: "Supprimer", onPress: () => AsyncStorage.removeItem(item.key)}],
+                                    {cancelable: false}
+                                )
+                                }>
+                                    <Task name={item.value.name} description={item.value.description} statue={item.value.statue} assigne={item.value.assigne}/>
+                                </TouchableOpacity>
+                            )
+                        }))
+
+                        }
+                    </View>
+                </View>
+            </ScrollView>
             <TouchableOpacity onPress={() => navigation.navigate('AddTask')}>
                 <View style={styles.addWrapper}>
                     <Text style={styles.addText}>Ajouter une tache</Text>
                 </View>
             </TouchableOpacity>
-            <View>
-                {route.params?.name ? (
-                    <Text style={styles.addText}>Nom: {route.params.name}, Description: {route.params.description}, Statue:  {route.params.statue}, Assignation:  {route.params.assigne}</Text>
-                ) : (
-                    <Text style={styles.addText}>Pas d'enregistrement ou Erreur lors de l'enregistrement</Text>
-                )}
-            </View>
+            <TouchableOpacity
+                onPress={() => Alert.alert("Confirmation", "Êtes-vous sûr de vouloir supprimer toutes les données?", [
+                        {text: "Annuler", style: "cancel"},
+                        {text: "Supprimer", onPress: () => AsyncStorage.clear()}
+                    ],
+                    {cancelable: false}
+                )
+                }>
+                <View style={styles.addWrapper}>
+                    <Text style={styles.addText}>Tout supprimer</Text>
+                </View>
+            </TouchableOpacity>
         </View>
-
-
     );
 }
 
@@ -81,18 +99,17 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFF',
         borderRadius: 60,
         borderColor: '#C0C0C0',
-        borderWidth: 1,
-        width: 250,
+        width: '80%',
     },
     addWrapper: {
-        width: 150,
-        height: 40,
-        backgroundColor: '#FFF',
-        borderRadius: 40,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderColor: '#C0C0C0',
-        borderWidth: 1,
+        backgroundColor: '#0072C6',
+        borderRadius: 60,
+        padding: 15,
+        marginTop: 30,
     },
-    addText: {},
+    addText: {
+        color: '#000000',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    }
 });

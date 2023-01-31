@@ -1,21 +1,37 @@
-import React, {useState} from 'react';
-import {View, TextInput, Button, Text, StyleSheet} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, TextInput, Button, Text, StyleSheet, AsyncStorage} from 'react-native';
 
 function AddTaskScreen({navigation}) {
-    const [formData, setFormData] = useState({name: '', description: '', statue: '', assigne: ''});
+    const [formData, setFormData] = useState({id: null, name: '', description: '', statue: '', assigne: ''});
     const [error, setError] = useState('');
 
-    const handleSubmit = () => {
+
+    const getMaxValue = async () => {
+        let id = 0;
+        let keys = [];
+        try {
+            keys = await AsyncStorage.getAllKeys();
+            const stores = await AsyncStorage.multiGet(keys);
+            stores.forEach((result) => {
+                let key = result[0];
+                if (id < key) id = key;
+            });
+        } catch (e) {
+            console.log(e);
+        }
+        return id
+    }
+
+    const handleSubmit = async () => {
         if (!formData.assigne || !formData.name || !formData.description || !formData.statue) {
             setError('Tous les champs doivent être remplis');
             return;
         } else {
-            navigation.navigate("Home", {
-                name: formData.name,
-                description: formData.description,
-                statue: formData.statue,
-                assigne: formData.assigne
-            });
+            let maxValue = parseInt(await getMaxValue()) + 1
+            formData.id= parseInt(await getMaxValue()) + 1
+            AsyncStorage.setItem((maxValue).toString(), JSON.stringify(formData))
+            navigation.navigate("Home")
+            setFormData(null)
         }
         setError('');
     };
@@ -30,6 +46,7 @@ function AddTaskScreen({navigation}) {
                 />
                 <TextInput
                     placeholder="Description"
+                    multiline
                     value={formData.description}
                     onChangeText={(text) => setFormData({...formData, description: text})}
                     style={styles.input}
@@ -48,7 +65,7 @@ function AddTaskScreen({navigation}) {
                 />
 
                 <Text style={styles.error}>{error}</Text>
-                <Button title="Envoyer" onPress={handleSubmit} style={styles.button} />
+                <Button title="Ajouter" onPress={handleSubmit} style={styles.button}/>
             </View>
         </View>
 

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {View, TextInput, Button, Text, StyleSheet} from 'react-native';
 
-function ModifyTaskScreen({navigation}) {
+function ModifyTaskScreen({navigation,route}) {
     const [formData, setFormData] = useState({id: '', name: '', description: '', statue: '', assigne: ''});
     const [error, setError] = useState('');
 
@@ -11,11 +11,6 @@ function ModifyTaskScreen({navigation}) {
             return;
         } else {
             navigation.navigate("HomeScreen", {
-                id: formData.id,
-                name: formData.name,
-                description: formData.description,
-                statue: formData.statue,
-                assigne: formData.assigne
             });
         }
         setError('');
@@ -25,31 +20,32 @@ function ModifyTaskScreen({navigation}) {
             <View style={styles.formContainer}>
                 <TextInput
                     placeholder="Nom"
-                    value={formData.name}
+                    value={route.params.name}
                     onChangeText={(text) => setFormData({...formData, name: text})}
                     style={styles.input}
                 />
                 <TextInput
                     placeholder="Description"
-                    value={formData.description}
+                    multiline
+                    value={route.params.description}
                     onChangeText={(text) => setFormData({...formData, description: text})}
                     style={styles.input}
                 />
                 <TextInput
                     placeholder="Statue"
-                    value={formData.statue}
+                    value={route.params.statue}
                     onChangeText={(text) => setFormData({...formData, statue: text})}
                     style={styles.input}
                 />
                 <TextInput
                     placeholder="Assignation"
-                    value={formData.assigne}
+                    value={route.params.assigne}
                     onChangeText={(text) => setFormData({...formData, assigne: text})}
                     style={styles.input}
                 />
 
                 <Text style={styles.error}>{error}</Text>
-                <Button title="Envoyer" onPress={handleSubmit} style={styles.button} />
+                <Button title="Modifier" onPress={handleSubmit} style={styles.button} />
             </View>
         </View>
 

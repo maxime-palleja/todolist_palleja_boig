@@ -5,6 +5,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeScreen from "./Screens/HomeScreen";
 import DetailsScreen from "./Screens/DetailsScreen";
 import AddTaskScreen from "./Screens/AddTaskScreen";
+import ModifyTaskScreen from "./Screens/ModifyTaskScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -53,6 +54,14 @@ export default function App() {
                                       color="#000000"
                                   />),
                           }}/>
+            <Stack.Screen name="ModifyTask" component={ModifyTaskScreen}
+                          options={{
+                              title: 'Modifier la tâche',
+                              headerStyle: {
+                                  backgroundColor: '#FBDFFF',
+                              }
+                          }}/>
+
 
         </Stack.Navigator>
       </NavigationContainer>

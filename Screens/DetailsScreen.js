@@ -4,6 +4,7 @@ import * as React from "react";
 
 function DetailsScreen({navigation}) {
     const [name, setName] = useState("");
+
     useEffect(() => {
         AsyncStorage.getItem("name")
             .then(name => {
