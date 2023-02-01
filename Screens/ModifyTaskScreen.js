@@ -1,17 +1,27 @@
-import React, {useState} from 'react';
-import {View, TextInput, Button, Text, StyleSheet} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, TextInput, Button, Text, StyleSheet, AsyncStorage, TouchableOpacity} from 'react-native';
 
 function ModifyTaskScreen({navigation,route}) {
     const [formData, setFormData] = useState({id: '', name: '', description: '', statue: '', assigne: ''});
     const [error, setError] = useState('');
+    useEffect(() => {
+        if(route.params) {
+           const formData = setFormData({id :route.params.key,
+                name :route.params.name,
+                description : route.params.description,
+                statue : route.params.statue,
+                assigne : route.params.assigne})
+        }
+    }, [route.params.key,route.params.name,route.params.description,route.params.statue,route.params.assigne])
 
     const handleSubmit = () => {
         if (!formData.assigne || !formData.name || !formData.description || !formData.statue) {
             setError('Tous les champs doivent être remplis');
             return;
         } else {
-            navigation.navigate("HomeScreen", {
-            });
+            AsyncStorage.setItem(formData.id.toString(), JSON.stringify(formData))
+            navigation.navigate("Home")
+            setFormData(null)
         }
         setError('');
     };
@@ -20,33 +30,39 @@ function ModifyTaskScreen({navigation,route}) {
             <View style={styles.formContainer}>
                 <TextInput
                     placeholder="Nom"
-                    value={route.params.name}
-                    onChangeText={(text) => setFormData({...formData, name: text})}
+                    value={formData.name}
+                    onChangeText={(text) => setFormData({...formData , name : text})}
                     style={styles.input}
                 />
                 <TextInput
                     placeholder="Description"
                     multiline
-                    value={route.params.description}
+                    value={formData.description}
                     onChangeText={(text) => setFormData({...formData, description: text})}
                     style={styles.input}
                 />
                 <TextInput
                     placeholder="Statue"
-                    value={route.params.statue}
+                    value={formData.statue}
                     onChangeText={(text) => setFormData({...formData, statue: text})}
                     style={styles.input}
                 />
                 <TextInput
                     placeholder="Assignation"
-                    value={route.params.assigne}
+                    value={formData.assigne}
                     onChangeText={(text) => setFormData({...formData, assigne: text})}
                     style={styles.input}
                 />
 
                 <Text style={styles.error}>{error}</Text>
                 <Button title="Modifier" onPress={handleSubmit} style={styles.button} />
-            </View>
+
+                <TouchableOpacity onPress={() =>navigation.navigate("ModifyTask",{name:route.params.name, description:route.params.description, statue:route.params.statue, assigne:route.params.assigne})}>
+                    <View style={styles.addWrapper}>
+                        <Text style={styles.addText}>Reset</Text>
+                    </View>
+                </TouchableOpacity>
+                </View>
         </View>
 
     );
@@ -80,7 +96,13 @@ const styles = StyleSheet.create({
         padding: 10,
         marginTop: 20,
         borderRadius: 5,
-    }
+    },
+    addWrapper: {
+        backgroundColor: '#0072C6',
+        borderRadius: 60,
+        padding: 15,
+        marginTop: 30,
+    },
 });
 
 export default ModifyTaskScreen;

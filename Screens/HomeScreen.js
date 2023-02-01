@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, AsyncStorage, ScrollView, TouchableOpacity, Alert} from 'react-native';
+import {View, Text, StyleSheet, AsyncStorage, ScrollView, TouchableOpacity, Alert, RefreshControl} from 'react-native';
 import * as React from "react";
 import Task from "../Component/Task";
 import {useState, useEffect} from "react";
@@ -6,35 +6,63 @@ import {useState, useEffect} from "react";
 
 function HomeScreen({navigation, route}) {
     const [data, setData] = useState(null);
+    const [refreshing, setRefreshing] = React.useState(false);
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        setTimeout(() => {
+            setRefreshing(false);
+            fetchData();
+        }, 2000);
+    }, []);
+
+    // useEffect(() => {
+    //     console.log('la')
+    //     const fetchData = async () => {
+    //         console.log('b')
+    //         try {
+    //             const keys = await AsyncStorage.getAllKeys();
+    //             const items = await AsyncStorage.multiGet(keys);
+    //             setData(items.map(([key, value]) => ({key, value: JSON.parse(value)})));
+    //         } catch (error) {
+    //             console.error(error);
+    //         }
+    //     };
+    //     fetchData();
+    // }, []);
+
+    const fetchData = async () => {
+        try {
+            const keys = await AsyncStorage.getAllKeys();
+            const items = await AsyncStorage.multiGet(keys);
+            setData(items.map(([key, value]) => ({key, value: JSON.parse(value)})));
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const keys = await AsyncStorage.getAllKeys();
-                const items = await AsyncStorage.multiGet(keys);
-                setData(items.map(([key, value]) => ({key, value: JSON.parse(value)})));
-            } catch (error) {
-                console.error(error);
-            }
-        };
         fetchData();
     }, []);
 
 
+
     return (
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-            <ScrollView>
+            <ScrollView refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }>
                 <View style={styles.tasksWrapper}>
                     <View style={styles.items}>
                         {data === null ? (
                             <Text>Loading...</Text>
                         ) : (data.map((item, index) => {
                             return (
-                                console.log(item.value.name),
                                 <TouchableOpacity key={item.key} onPress={() => Alert.alert("MODIFIER / SUPPRIMER", "Tâche : "+item.value.name, [
                                         {text: "Annuler", style: "cancel"},
-                                        {text: "Modifier", onPress: () => navigation.navigate("ModifyTask",{key:item.key ,name:item.value.name, description:item.value.description, statue:item.value.statue, assigne:item.value.assigne})},
-                                        {text: "Supprimer", onPress: () => AsyncStorage.removeItem(item.key)}],
+                                        {text: "Modifier", onPress: () => navigation.navigate("ModifyTask",{key:item.key ,name:item.value.name, description:item.value.description, statue:item.value.statue, assigne:item.value.assigne}), onRefresh},
+                                        {text: "Supprimer", onPress: () => AsyncStorage.removeItem(key)}],
                                     {cancelable: false}
                                 )
                                 }>
