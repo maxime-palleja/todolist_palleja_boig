@@ -20,7 +20,7 @@ function ModifyTaskScreen({navigation,route}) {
             return;
         } else {
             AsyncStorage.setItem(formData.id.toString(), JSON.stringify(formData))
-            navigation.navigate("Home")
+            navigation.navigate("Home",{refresh: true})
             setFormData(null)
         }
         setError('');
@@ -55,7 +55,11 @@ function ModifyTaskScreen({navigation,route}) {
                 />
 
                 <Text style={styles.error}>{error}</Text>
-                <Button title="Modifier" onPress={handleSubmit} style={styles.button} />
+                <TouchableOpacity onPress={handleSubmit}>
+                    <View style={styles.addWrapper}>
+                        <Text style={styles.addText}>Modifier</Text>
+                    </View>
+                </TouchableOpacity>
 
                 <TouchableOpacity onPress={() =>navigation.navigate("ModifyTask",{name:route.params.name, description:route.params.description, statue:route.params.statue, assigne:route.params.assigne})}>
                     <View style={styles.addWrapper}>
@@ -72,7 +76,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
+        marginTop:30
     },
     formContainer: {
         width: '80%',
@@ -90,19 +95,18 @@ const styles = StyleSheet.create({
         color: 'red',
         marginVertical: 10,
     },
-    button: {
-        backgroundColor: 'blue',
-        color: 'white',
-        padding: 10,
-        marginTop: 20,
-        borderRadius: 5,
-    },
     addWrapper: {
         backgroundColor: '#0072C6',
-        borderRadius: 60,
+        borderRadius: 50,
         padding: 15,
-        marginTop: 30,
+        marginTop: 10,
     },
+    addText: {
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    }
+
 });
 
 export default ModifyTaskScreen;

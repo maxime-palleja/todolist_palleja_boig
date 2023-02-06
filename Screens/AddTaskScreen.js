@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import {View, TextInput, Button, Text, StyleSheet, AsyncStorage} from 'react-native';
+import {View, TextInput, Button, Text, StyleSheet, AsyncStorage, TouchableOpacity, FlatList} from 'react-native';
+
 
 function AddTaskScreen({navigation}) {
     const [formData, setFormData] = useState({id: null, name: '', description: '', statue: '', assigne: ''});
@@ -28,9 +29,9 @@ function AddTaskScreen({navigation}) {
             return;
         } else {
             let maxValue = parseInt(await getMaxValue()) + 1
-            formData.id= parseInt(await getMaxValue()) + 1
+            formData.id = parseInt(await getMaxValue()) + 1
             AsyncStorage.setItem((maxValue).toString(), JSON.stringify(formData))
-            navigation.navigate("Home")
+            navigation.navigate("Home", {refresh: true})
             setFormData(null)
         }
         setError('');
@@ -57,17 +58,22 @@ function AddTaskScreen({navigation}) {
                     onChangeText={(text) => setFormData({...formData, statue: text})}
                     style={styles.input}
                 />
+
                 <TextInput
                     placeholder="Assignation"
                     value={formData.assigne}
                     onChangeText={(text) => setFormData({...formData, assigne: text})}
                     style={styles.input}
                 />
-
                 <Text style={styles.error}>{error}</Text>
-                <Button title="Ajouter" onPress={handleSubmit} style={styles.button}/>
+                <TouchableOpacity onPress={handleSubmit}>
+                    <View style={styles.addWrapper}>
+                        <Text style={styles.addText}>Ajouter</Text>
+                    </View>
+                </TouchableOpacity>
             </View>
         </View>
+
 
     );
 };
@@ -76,11 +82,18 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
+        marginTop: 30
     },
     formContainer: {
         width: '80%',
         alignItems: 'center',
+    },
+    addWrapper: {
+        backgroundColor: '#0072C6',
+        borderRadius: 60,
+        padding: 20,
+        marginTop: 5,
     },
     input: {
         width: '100%',
@@ -94,13 +107,14 @@ const styles = StyleSheet.create({
         color: 'red',
         marginVertical: 10,
     },
-    button: {
-        backgroundColor: 'blue',
+   addText: {
         color: 'white',
-        padding: 10,
-        marginTop: 20,
-        borderRadius: 5,
-    }
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    content: {
+        fontSize: 16,
+    },
 });
 
 export default AddTaskScreen;
