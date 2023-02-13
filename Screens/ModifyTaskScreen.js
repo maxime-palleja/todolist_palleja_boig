@@ -29,13 +29,13 @@ function ModifyTaskScreen({navigation,route}) {
         <View style={styles.container}>
             <View style={styles.formContainer}>
                 <TextInput
-                    placeholder="Nom"
+                    placeholder="Tâche à réaliser"
                     value={formData.name}
                     onChangeText={(text) => setFormData({...formData , name : text})}
                     style={styles.input}
                 />
                 <TextInput
-                    placeholder="Description"
+                    placeholder="Description de la tâche"
                     multiline
                     value={formData.description}
                     onChangeText={(text) => setFormData({...formData, description: text})}
@@ -61,7 +61,7 @@ function ModifyTaskScreen({navigation,route}) {
                     </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() =>navigation.navigate("ModifyTask",{name:route.params.name, description:route.params.description, statue:route.params.statue, assigne:route.params.assigne})}>
+                <TouchableOpacity onPress={() =>navigation.navigate("ModifyTask",{key: route.params.key,name:route.params.name, description:route.params.description, statue:route.params.statue, assigne:route.params.assigne})}>
                     <View style={styles.addWrapper}>
                         <Text style={styles.addText}>Reset</Text>
                     </View>

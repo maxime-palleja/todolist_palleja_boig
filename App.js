@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {Button, StyleSheet, Text, View,Alert} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
@@ -19,7 +19,12 @@ export default function App() {
                             title: 'Liste des tâches',
                           headerStyle: {
                             backgroundColor: '#FBDFFF',
-                          }
+                          } ,headerRight: () => (
+                                <Button
+                                    onPress={() => Alert.alert("INFOS","Version:\n13-02-2023\nDéveloppement:\nMaxime PALLEJA\nGabriel BOIG")}
+                                    title="?"
+                                    color='#FFFFFFFF'
+                                />),
                         }}/>
             <Stack.Screen name="AddTask" component={AddTaskScreen}
                           options={{
@@ -32,7 +37,7 @@ export default function App() {
                           options={{
                               title: 'Modifier la tâche',
                               headerStyle: {
-                                  backgroundColor: '#FBDFFF',
+                                  backgroundColor: '#ffffff',
                               }
                           }}/>
 

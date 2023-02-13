@@ -40,13 +40,13 @@ function AddTaskScreen({navigation}) {
         <View style={styles.container}>
             <View style={styles.formContainer}>
                 <TextInput
-                    placeholder="Nom"
+                    placeholder="Tâche à réaliser"
                     value={formData.name}
                     onChangeText={(text) => setFormData({...formData, name: text})}
                     style={styles.input}
                 />
                 <TextInput
-                    placeholder="Description"
+                    placeholder="Description de la tâche"
                     multiline
                     value={formData.description}
                     onChangeText={(text) => setFormData({...formData, description: text})}

@@ -102,7 +102,7 @@ function HomeScreen({navigation, route}) {
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={() => Alert.alert("Confirmation", "Êtes-vous sûr de vouloir supprimer toutes les données?", [
+                    onPress={() => Alert.alert("Confirmation", "Êtes-vous sûr de vouloir supprimer toutes les tâches?", [
                             {text: "Annuler", style: "cancel"},
                             {text: "Supprimer", onPress: () => refreshOnDeleteAll()}
                         ],
