@@ -6,7 +6,7 @@ const Task = (props) => {
     return (
         <View style={styles.item}>
             <View style={styles.itemLeft}>
-                <Text style={styles.itemText}>{props.name}:{'\n'}</Text>
+                <Text style={styles.itemTextTitre}>{props.name}{'\n'}</Text>
                 <Text style={styles.itemText}>{props.description}{'\n'}</Text>
                 <Text style={styles.itemText}>Assigné à: {props.assigne}{'\n'}</Text>
                 <Text style={styles.itemText}>Avancement: {props.statue}</Text>
@@ -28,7 +28,13 @@ const styles = StyleSheet.create({
     },
     itemText: {
         maxWidth: '100%',
-        borderRightWidth:'10px'
+        borderRightWidth:'10px',
+
+    },
+    itemTextTitre: {
+        maxWidth: '100%',
+        borderRightWidth:'10px',
+        fontWeight: 'bold'
     },
     circular: {
         width: 12,

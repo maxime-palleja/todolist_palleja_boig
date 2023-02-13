@@ -30,14 +30,14 @@ export default function App() {
                           options={{
                               title: 'Ajouter une tache',
                               headerStyle: {
-                                  backgroundColor: '#FBDFFF',
+                                  backgroundColor: '#8e98e3',
                               }
                           }}/>
             <Stack.Screen name="ModifyTask" component={ModifyTaskScreen}
                           options={{
                               title: 'Modifier la tâche',
                               headerStyle: {
-                                  backgroundColor: '#ffffff',
+                                  backgroundColor: '#e48cee',
                               }
                           }}/>
 
