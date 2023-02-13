@@ -53,7 +53,7 @@ function AddTaskScreen({navigation}) {
                     style={styles.input}
                 />
                 <TextInput
-                    placeholder="Statue"
+                    placeholder="État"
                     value={formData.statue}
                     onChangeText={(text) => setFormData({...formData, statue: text})}
                     style={styles.input}

@@ -42,7 +42,7 @@ function ModifyTaskScreen({navigation,route}) {
                     style={styles.input}
                 />
                 <TextInput
-                    placeholder="Statue"
+                    placeholder="État"
                     value={formData.statue}
                     onChangeText={(text) => setFormData({...formData, statue: text})}
                     style={styles.input}
