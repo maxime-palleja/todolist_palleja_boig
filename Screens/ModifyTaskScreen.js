@@ -1,9 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {View, TextInput, Button, Text, StyleSheet, AsyncStorage, TouchableOpacity} from 'react-native';
+import {Dropdown} from 'react-native-element-dropdown';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 function ModifyTaskScreen({navigation,route}) {
     const [formData, setFormData] = useState({id: '', name: '', description: '', statue: '', assigne: ''});
     const [error, setError] = useState('');
+    const [value, setValue] = useState(null);
+    const [isFocus, setIsFocus] = useState(false);
+    const listAvancement = [
+        {label: 'À faire', value: '1'},
+        {label: 'En cours', value: '2'},
+        {label: 'Terminé', value: '3'}
+    ];
     useEffect(() => {
         if(route.params) {
            const formData = setFormData({id :route.params.key,
@@ -41,17 +50,48 @@ function ModifyTaskScreen({navigation,route}) {
                     onChangeText={(text) => setFormData({...formData, description: text})}
                     style={styles.input}
                 />
-                <TextInput
-                    placeholder="État"
-                    value={formData.statue}
-                    onChangeText={(text) => setFormData({...formData, statue: text})}
-                    style={styles.input}
-                />
+                {/*<TextInput*/}
+                {/*    placeholder="Statue"*/}
+                {/*    value={formData.statue}*/}
+                {/*    onChangeText={(text) => setFormData({...formData, statue: text})}*/}
+                {/*    style={styles.input}*/}
+                {/*/>*/}
                 <TextInput
                     placeholder="Assignation"
                     value={formData.assigne}
                     onChangeText={(text) => setFormData({...formData, assigne: text})}
                     style={styles.input}
+                />
+                <Dropdown
+                    style={[styles.input, isFocus && {borderColor: 'blue'}]}
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={styles.selectedTextStyle}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    iconStyle={styles.iconStyle}
+
+                    data={listAvancement}
+                    search
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    placeholder={!isFocus ? formData.name : '...'}
+                    searchPlaceholder="Search..."
+                    value={value}
+                    onFocus={() => setIsFocus(true)}
+                    onBlur={() => setIsFocus(false)}
+                    onChange={item => {
+                        setValue(item.value);
+                        setIsFocus(false);
+                        setFormData({...formData, statue: item.label})
+                    }}
+                    renderLeftIcon={() => (
+                        <AntDesign
+                            style={styles.icon}
+                            color={isFocus ? 'blue' : 'black'}
+                            name="Safety"
+                            size={20}
+                        />
+                    )}
                 />
 
                 <Text style={styles.error}>{error}</Text>

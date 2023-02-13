@@ -1,10 +1,19 @@
-import React, {useState, useEffect} from 'react';
-import {View, TextInput, Button, Text, StyleSheet, AsyncStorage, TouchableOpacity, FlatList} from 'react-native';
-
+import React, {useState} from 'react';
+import {View, TextInput, Text, StyleSheet, AsyncStorage, TouchableOpacity} from 'react-native';
+import {Dropdown} from 'react-native-element-dropdown';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 function AddTaskScreen({navigation}) {
     const [formData, setFormData] = useState({id: null, name: '', description: '', statue: '', assigne: ''});
     const [error, setError] = useState('');
+    const [value, setValue] = useState(null);
+    const [isFocus, setIsFocus] = useState(false);
+
+    const listAvancement = [
+        {label: 'À  faire', value: '1'},
+        {label: 'En cours', value: '2'},
+        {label: 'Terminé', value: '3'}
+    ];
 
 
     const getMaxValue = async () => {
@@ -52,18 +61,47 @@ function AddTaskScreen({navigation}) {
                     onChangeText={(text) => setFormData({...formData, description: text})}
                     style={styles.input}
                 />
-                <TextInput
-                    placeholder="État"
-                    value={formData.statue}
-                    onChangeText={(text) => setFormData({...formData, statue: text})}
-                    style={styles.input}
-                />
-
+                {/*<TextInput*/}
+                {/*    placeholder="Statue"*/}
+                {/*    value={formData.statue}*/}
+                {/*    onChangeText={(text) => setFormData({...formData, statue: text})}*/}
+                {/*    style={styles.input}*/}
+                {/*/>*/}
                 <TextInput
                     placeholder="Assignation"
                     value={formData.assigne}
                     onChangeText={(text) => setFormData({...formData, assigne: text})}
                     style={styles.input}
+                />
+                <Dropdown
+                    style={[styles.input, isFocus && {borderColor: 'blue'}]}
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={styles.selectedTextStyle}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    iconStyle={styles.iconStyle}
+                    data={listAvancement}
+                    search
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    placeholder={!isFocus ? 'État : ' : '...'}
+                    searchPlaceholder="Search..."
+                    value={value}
+                    onFocus={() => setIsFocus(true)}
+                    onBlur={() => setIsFocus(false)}
+                    onChange={item => {
+                        setValue(item.value);
+                        setIsFocus(false);
+                        setFormData({...formData, statue: item.label})
+                    }}
+                    renderLeftIcon={() => (
+                        <AntDesign
+                            style={styles.icon}
+                            color={isFocus ? 'blue' : 'black'}
+                            name="Safety"
+                            size={20}
+                        />
+                    )}
                 />
                 <Text style={styles.error}>{error}</Text>
                 <TouchableOpacity onPress={handleSubmit}>
@@ -71,6 +109,7 @@ function AddTaskScreen({navigation}) {
                         <Text style={styles.addText}>Ajouter</Text>
                     </View>
                 </TouchableOpacity>
+
             </View>
         </View>
 
@@ -107,14 +146,14 @@ const styles = StyleSheet.create({
         color: 'red',
         marginVertical: 10,
     },
-   addText: {
+    addText: {
         color: 'white',
         fontWeight: 'bold',
         textAlign: 'center',
     },
     content: {
         fontSize: 16,
-    },
+    }
 });
 
 export default AddTaskScreen;
