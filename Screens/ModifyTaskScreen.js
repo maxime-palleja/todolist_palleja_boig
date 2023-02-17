@@ -1,12 +1,16 @@
+//import des librairies nécessaires
 import React, {useEffect, useState} from 'react';
 import {View, TextInput, Button, Text, StyleSheet, AsyncStorage, TouchableOpacity} from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 
+
 function ModifyTaskScreen({navigation,route}) {
+    //déclaration des variables
     const [formData, setFormData] = useState({id: '', name: '', description: '', statue: '', assigne: ''});
     const [error, setError] = useState('');
     const [value, setValue] = useState(null);
     const [isFocus, setIsFocus] = useState(false);
+    //déclaration des états possibles
     const listAvancement = [
         {label: 'À faire', value: '1'},
         {label: 'En cours', value: '2'},
@@ -14,7 +18,7 @@ function ModifyTaskScreen({navigation,route}) {
     ];
     useEffect(() => {
         if(route.params) {
-           const formData = setFormData({id :route.params.key,
+            const formData = setFormData({id :route.params.key,
                 name :route.params.name,
                 description : route.params.description,
                 statue : route.params.statue,
@@ -22,6 +26,7 @@ function ModifyTaskScreen({navigation,route}) {
         }
     }, [route.params.key,route.params.name,route.params.description,route.params.statue,route.params.assigne])
 
+    //méthode qui vérifie que les champs ont été renseignés, si tel est le cas enregistrement des modifications
     const handleSubmit = () => {
         if (!formData.assigne || !formData.name || !formData.description || !formData.statue) {
             setError('Tous les champs doivent être remplis');
@@ -33,6 +38,7 @@ function ModifyTaskScreen({navigation,route}) {
         }
         setError('');
     };
+    //formulaire de modification
     return (
         <View style={styles.container}>
             <View style={styles.formContainer}>
@@ -88,6 +94,7 @@ function ModifyTaskScreen({navigation,route}) {
     );
 };
 
+// propriétés CSS / front
 const styles = StyleSheet.create({
     container: {
         flex: 1,

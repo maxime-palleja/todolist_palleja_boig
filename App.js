@@ -1,7 +1,7 @@
+//import des librairies nécessaires
 import {Button, StyleSheet, Text, View,Alert} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-
 import HomeScreen from "./Screens/HomeScreen";
 import AddTaskScreen from "./Screens/AddTaskScreen";
 import ModifyTaskScreen from "./Screens/ModifyTaskScreen";

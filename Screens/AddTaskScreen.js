@@ -1,13 +1,17 @@
+//import des librairies nécessaires
 import React, {useState} from 'react';
 import {View, TextInput, Text, StyleSheet, AsyncStorage, TouchableOpacity} from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 
+
 function AddTaskScreen({navigation}) {
+    //déclaration des variables
     const [formData, setFormData] = useState({id: null, name: '', description: '', statue: '', assigne: ''});
     const [error, setError] = useState('');
     const [value, setValue] = useState(null);
     const [isFocus, setIsFocus] = useState(false);
 
+    //déclaration des états possibles
     const listAvancement = [
         {label: 'À  faire', value: '1'},
         {label: 'En cours', value: '2'},
@@ -30,6 +34,7 @@ function AddTaskScreen({navigation}) {
         return id
     }
 
+    //méthode qui vérifie que les champs ont été renseignés, si tel est le cas, récupération de l'id de la dernière tache et ajout de +1 pour la nouvelle. Après ça, enregistrement
     const handleSubmit = async () => {
         if (!formData.assigne || !formData.name || !formData.description || !formData.statue) {
             setError('Tous les champs doivent être remplis');
@@ -44,6 +49,7 @@ function AddTaskScreen({navigation}) {
         setError('');
     };
     return (
+        //formulaire de création d'une tâche avec tous les champs nécessaires
         <View style={styles.container}>
             <View style={styles.formContainer}>
                 <TextInput
@@ -93,6 +99,7 @@ function AddTaskScreen({navigation}) {
     );
 };
 
+// propriétés CSS / front
 const styles = StyleSheet.create({
     container: {
         flex: 1,
